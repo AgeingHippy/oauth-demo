@@ -13,13 +13,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/")
-                        .permitAll()
-                        .requestMatchers("/protected")
-                        .authenticated()
-                        .anyRequest()
-                        .permitAll())
-                .oauth2Login(Customizer.withDefaults());
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/protected").authenticated()
+                        .requestMatchers("/homepage").authenticated()
+                        .anyRequest().permitAll())
+                .oauth2Login(oauth -> oauth
+                        .defaultSuccessUrl("/homepage"))
+                .logout(logout -> logout.logoutSuccessUrl("/logout-success"));
         return http.build();
     }
 }
+
